@@ -61,7 +61,6 @@
 
         body {
             background-color: #FEFEFE;
-            color: #2DC379;
             color: #212529;
             text-align: center;
             user-select: none;
@@ -517,12 +516,12 @@
 
             10% {
                 opacity: 1;
-                z-index: 100;
+                z-index: 999;
             }
 
             70% {
                 opacity: 1;
-                z-index: 100;
+                z-index: 999;
             }
 
             100% {
@@ -533,6 +532,172 @@
 
 
 
+
+
+        @keyframes confirm-in {
+            from {
+                bottom: -100%;
+            }
+
+            to {
+                bottom: 5%;
+            }
+        }
+
+
+
+
+        @keyframes confirm-out {
+            from {
+                bottom: 5%;
+            }
+
+            to {
+                bottom: -100%;
+            }
+        }
+
+
+
+        .confirm-in-animate {
+            animation: confirm-in 1s ease forwards;
+        }
+
+        .confirm-out-animate {
+            animation: confirm-out 1s ease forwards;
+        }
+
+        .confirm-back-animate {
+            animation: fade-in 0.75s ease forwards;
+        }
+
+        .confirm-back-out-animate {
+            animation: fade-out 0.75s ease forwards;
+        }
+
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+                z-index: -100;
+            }
+
+            to {
+                opacity: 1;
+                z-index: 999;
+            }
+        }
+
+        @keyframes fade-out {
+            from {
+                opacity: 1;
+                z-index: 999;
+            }
+
+            to {
+                opacity: 0;
+                z-index: -100;
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+        .confirm-back {
+            width: 100%;
+            height: 100vh;
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.627);
+            top: 0;
+            left: 0;
+            z-index: -100;
+            backdrop-filter: blur(5px);
+            opacity: 0;
+            animation-delay: 0.4s;
+
+
+
+            .confirm {
+                width: 400px;
+                padding: 10px;
+                background-color: white;
+                border: 2px solid #2DC379;
+                position: absolute;
+                bottom: -100%;
+                left: 50%;
+                border-radius: 1rem;
+                transform: translateX(-50%);
+                display: flex;
+                justify-content: start;
+                align-items: start;
+                flex-direction: column;
+
+                h6 {
+                    font-size: 15px;
+                    margin-bottom: 10px;
+                }
+
+                span {
+                    display: flex;
+                    text-align: left;
+                    color: #3b3a3a;
+                    margin-bottom: 10px;
+                }
+
+
+                div {
+                    width: 100%;
+                    height: 50px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 20px;
+
+                    button {
+                        width: 50%;
+                        height: 100%;
+                        border: none;
+                        border-radius: 10px;
+                        font-size: 16px;
+                        cursor: pointer;
+                        transition: 0.2s;
+
+
+
+                        &:nth-of-type(2) {
+                            background-color: #ff5463;
+                            color: white;
+                        }
+                    }
+
+                    button:active {
+                        scale: 0.95;
+                    }
+
+                }
+
+
+            }
+
+
+
+            @media screen and (max-width:360px) {
+                .confirm {
+                    width: 320px;
+                }
+            }
+
+            @media screen and (min-width:361px) and (max-width:430px) {
+                .confirm {
+                    width: 350px;
+                }
+            }
+        }
 
 
         .popup-back {
@@ -670,6 +835,20 @@
             </div>
 
 
+            <div class="confirm-back">
+                <div class="confirm">
+                    <h6>Reset Data</h6>
+                    <span id="confirm-span">Are you sure you want to reset all data?<br>This action can't be
+                        undone.</span>
+                    <div>
+                        <button id="cancel">Cancel</button>
+                        <button id="reset-button">Reset Data</button>
+                    </div>
+                    <!-- <i class="bi bi-check-circle-fill"></i> -->
+                </div>
+            </div>
+
+
 
         </div>
 
@@ -755,18 +934,88 @@
 
 
 
+
+    const confirmBack = document.querySelector(".confirm-back");
+    const confirmBox = document.querySelector(".confirm");
+
     function resetAll() {
-        if (confirm("Are you sure you want to reset all data?")) {
+        confirmBack.classList.add("confirm-back-animate");
+        confirmBox.classList.add("confirm-in-animate");
+
+
+        setTimeout(() => {
+            confirmBack.style.zIndex = 999
+            confirmBack.style.opacity = 1
+
+            confirmBox.style.Bottom = "5%"
+        }, 1000);
+
+
+
+
+
+
+
+    }
+
+    document.getElementById("cancel").addEventListener("click", function () {
+
+        confirmBack.classList.remove("confirm-back-animate");
+        confirmBox.classList.remove("confirm-in-animate");
+
+        confirmBack.classList.add("confirm-back-out-animate");
+        confirmBox.classList.add("confirm-out-animate");
+
+        setTimeout(() => {
+            confirmBack.classList.remove("confirm-back-out-animate");
+            confirmBox.classList.remove("confirm-out-animate");
+
+            confirmBack.style.zIndex = -100
+            confirmBack.style.opacity = 0
+
+            confirmBox.style.Bottom = "-100%"
+        }, 1000);
+
+
+
+    });
+
+
+
+    document.getElementById("reset-button").addEventListener("click", function () {
+        confirmBack.classList.remove("confirm-back-animate");
+        confirmBox.classList.remove("confirm-in-animate");
+
+        confirmBack.classList.add("confirm-back-out-animate");
+        confirmBox.classList.add("confirm-out-animate");
+
+        setTimeout(() => {
+            confirmBack.classList.remove("confirm-back-out-animate");
+            confirmBox.classList.remove("confirm-out-animate");
+
+            confirmBack.style.zIndex = -100
+            confirmBack.style.opacity = 0
+
+            confirmBox.style.Bottom = "-100%"
+        }, 1000);
+
+        setTimeout(() => {
             localStorage.clear();
             showPopup("All data was reset successfully");
-            setTimeout(() => {
-                location.reload();
-            }, 3400);
-        }
-    }
+        }, 1000);
+
+        setTimeout(() => {
+            location.reload();
+        }, 5000);
+    })
+
+
 
 
     
+
+
+
     document.getElementById("upload").addEventListener("click", function () {
         document.getElementById("imageInput").click();
     });
@@ -834,7 +1083,7 @@
 
             li.innerHTML = `
              <div class="pill-image">
-             <img draggable="false" src="${iconData || 'pill-icon.png'}" class="pill-icon">
+             <img draggable="false" src="${iconData || 'pill-icon4.png'}" class="pill-icon">
               </div>
               <div class="data">
                 <span>${item.datetime}</span>  <span class="pcs-count">${item.count} pcs</span>
@@ -928,7 +1177,7 @@
     });
 
 
-    
+
     window.addEventListener('load', () => {
         total = parseInt(localStorage.getItem('phyto_total') || '0');
         iconData = localStorage.getItem("phyto_icon") || "";
