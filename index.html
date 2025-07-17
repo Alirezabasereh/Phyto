@@ -4,8 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Phyto Tracker</title>
-    <link rel="manifest" href="manifest.json">
+    <title>DoseLog</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -54,11 +53,15 @@
             padding: 0;
             box-sizing: border-box;
             font-family: "Nunito";
+            -webkit-tap-highlight-color: transparent;
         }
+
+
 
 
         body {
             background-color: #FEFEFE;
+            color: #2DC379;
             color: #212529;
             text-align: center;
             user-select: none;
@@ -73,28 +76,36 @@
             max-width: 400px;
             background-color: #FEFEFE;
             height: 100vh;
-            padding: 10px;
+            padding: 0px 10px;
             position: relative;
             overflow: hidden;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            flex-direction: column;
 
 
             .first-section {
                 width: 100%;
-                height: 350px;
                 min-height: auto;
+                flex-shrink: 0;
+                margin-bottom: 16px;
             }
 
             .cardlist {
                 width: 100%;
-                height: calc(100vh - 350px);
                 overflow-y: scroll;
                 scroll-behavior: smooth;
+                flex-grow: 1;
             }
 
 
             .bottom {
-                position: absolute;
-                bottom: 0px;
+                position: sticky;
+                flex-shrink: 0;
+                z-index: 100;
+                bottom: 0;
+                /* transform: translateY(10px); */
                 left: 0;
                 width: 100%;
                 height: 8%;
@@ -196,6 +207,10 @@
 
         h2 {
             font-size: 16px;
+
+            .pill_name {
+                color: #2DC379;
+            }
         }
 
         .inp-btn {
@@ -251,6 +266,7 @@
             cursor: pointer;
             transition: 0.2s ease;
             border: 2px solid #10d371;
+            font-weight: bold;
         }
 
         #saveButton:active {
@@ -280,8 +296,18 @@
             font-size: 14px;
             flex-wrap: wrap;
             border: 5px solid #2DC379;
-            border-left: none;
-            border-bottom: none;
+
+
+            &:nth-of-type(1) {
+                border-left: none;
+                border-bottom: none;
+            }
+
+            &:nth-of-type(2) {
+                border-right: none;
+                border-bottom: none;
+            }
+
 
 
             .txt-before {
@@ -320,6 +346,7 @@
             color: #000000;
             font-weight: bold;
             font-size: 14px;
+            margin-bottom: 10px;
         }
 
         #persentage {
@@ -401,6 +428,7 @@
             align-items: center;
             transition: 0.5s;
             height: 50px;
+            border: 1px solid #2dc37839;
 
             .pill-icon {
                 width: 60%;
@@ -519,10 +547,6 @@
             backdrop-filter: blur(5px);
             opacity: 0;
             animation-delay: 0.4s;
-
-
-
-
 
 
             .popup {
@@ -651,12 +675,9 @@
 
 
 
-
         <div class="cardlist">
             <ul id="listView"></ul>
         </div>
-
-
 
 
 
@@ -718,14 +739,48 @@
     let list = JSON.parse(localStorage.getItem('phyto_list') || '[]');
     let iconData = localStorage.getItem("phyto_icon") || "";
     let lastAdded = null;
-
-
-
     let progressBar = document.querySelector("#persentage>div")
 
 
+    function showPopup(message) {
+        document.getElementById("popup-span").innerText = message;
+        document.getElementsByClassName("popup-back")[0].classList.add("popup-back-animate");
+        document.getElementsByClassName("popup")[0].classList.add("popup-in-animate");
+        setTimeout(() => {
+            document.getElementsByClassName("popup-back")[0].classList.remove("popup-back-animate");
+            document.getElementsByClassName("popup")[0].classList.remove("popup-in-animate");
+            document.getElementById("popup-span").innerText = "";
+        }, 3400);
+    }
 
 
+
+    function resetAll() {
+        if (confirm("Are you sure you want to reset all data?")) {
+            localStorage.clear();
+            showPopup("All data was reset successfully");
+            setTimeout(() => {
+                location.reload();
+            }, 3400);
+        }
+    }
+
+
+    
+    document.getElementById("upload").addEventListener("click", function () {
+        document.getElementById("imageInput").click();
+    });
+
+
+    function scrollToTop() {
+        const cardlist = document.querySelector(".cardlist");
+        if (cardlist) {
+            cardlist.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        }
+    }
 
 
 
@@ -753,55 +808,15 @@
         }
     }
 
-    document.getElementById("h2").textContent = "Log Your Daily " + pillname + " Intake";
-
-
-    function resetAll() {
-        if (confirm("Are you sure you want to reset all data?")) {
-            localStorage.clear();
-
-            document.getElementById("popup-span").innerText = "All data was reset successfully"
-            document.getElementsByClassName("popup-back")[0].classList.add("popup-back-animate")
-            document.getElementsByClassName("popup")[0].classList.add("popup-in-animate")
-
-            setTimeout(() => {
-                document.getElementsByClassName("popup-back")[0].classList.remove("popup-back-animate")
-                document.getElementsByClassName("popup")[0].classList.remove("popup-in-animate")
-                document.getElementById("popup-span").innerText = ""
-                location.reload();
-
-            }, 3400);
-
-
-
-        }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
+    document.getElementById("h2").innerHTML = `Log Your Daily <span class="pill_name"> ${pillname} </span> Intake`;
 
 
 
 
 
     function updateUI() {
-
-
         document.getElementById('totalText').textContent = `${total}`;
-
-
         document.getElementById('remainingText').textContent = `${max - total}`;
-
-
 
         const listView = document.getElementById('listView');
         listView.innerHTML = '';
@@ -809,7 +824,6 @@
         list.forEach(item => {
             const li = document.createElement('li');
 
-            // بررسی انیمیشن ورود
             if (
                 lastAdded &&
                 item.datetime === lastAdded.datetime &&
@@ -829,24 +843,8 @@
             listView.appendChild(li);
         });
 
-
-
-
-
         progressBar.style.width = ((total / max) * 100) + "%";
-
         document.querySelector("#progress-txt>span:nth-of-type(1)").innerHTML = Math.round((total / max) * 100) + "%";
-
-        // if (((total / max) * 100) >= 71) {
-        //     progress_spans.style.color = "white"
-        //     progress_spans1.style.color = "white"
-        // } else {
-        //     progress_spans.style.color = "black"
-        //     progress_spans1.style.color = "black"
-        // }
-
-
-
     }
 
     function saveData() {
@@ -861,7 +859,7 @@
         const input = document.getElementById('countInput').value;
 
         if (input > (max - total)) {
-            alert("عدد وارد شده از تعداد باقیمانده بیشتر بوده یا قرص ها را کامل مصرف کرده‌اید")
+            showPopup("You've already taken all the pills");
         }
         else {
             const count = parseInt(input);
@@ -874,43 +872,14 @@
                 saveData();
                 updateUI();
 
-                //     const listView = document.getElementById('listView');
-                //     const li = document.createElement('li');
-                //     li.classList.add('create');
-                //     li.innerHTML = `
-                //     <div class="pill-image">
-                //         <img src="pill-icon.png" class="pill-icon">
-                //     </div>
-                //     <div class="data">
-                //         <span>${entry}</span>
-                //     </div>
-                // `;
-                // listView.appendChild(li);
-
-                // document.getElementById('totalText').textContent = `مصرف شده: ${total} عدد`;
-                // document.getElementById('remainingText').textContent = `باقی‌مانده: ${max - total} عدد`;
-
-                // document.getElementById('countInput').value = '';
-
             }
         }
 
         if (input <= 0) {
-            alert("عدد معتبر وارد کنید")
+            showPopup("Enter a valid dose");
         }
 
-
-
     });
-
-
-
-
-
-
-
-
-
 
 
 
@@ -929,58 +898,18 @@
                 updateUI();
             }, 400);
         }
-
-
         else {
-            document.getElementById("popup-span").innerText = "There is no item to remove"
-            document.getElementsByClassName("popup-back")[0].classList.add("popup-back-animate")
-            document.getElementsByClassName("popup")[0].classList.add("popup-in-animate")
-
-            setTimeout(() => {
-                document.getElementsByClassName("popup-back")[0].classList.remove("popup-back-animate")
-                document.getElementsByClassName("popup")[0].classList.remove("popup-in-animate")
-                document.getElementById("popup-span").innerText = ""
-            }, 3400);
+            showPopup("There is no item to remove");
         }
+
     });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
     document.getElementById('removeall').addEventListener('click', () => {
 
-
         if (total == 0) {
-            document.getElementById("popup-span").innerText = "There is no item to remove"
-            document.getElementsByClassName("popup-back")[0].classList.add("popup-back-animate")
-            document.getElementsByClassName("popup")[0].classList.add("popup-in-animate")
-
-            setTimeout(() => {
-                document.getElementsByClassName("popup-back")[0].classList.remove("popup-back-animate")
-                document.getElementsByClassName("popup")[0].classList.remove("popup-in-animate")
-                document.getElementById("popup-span").innerText = ""
-            }, 3400);
-
-
+            showPopup("There is no item to remove");
         } else {
 
 
@@ -993,40 +922,24 @@
             list = [];
             saveData();
             updateUI();
-
-
-
-            document.getElementById("popup-span").innerText = "All items removed successfully"
-            document.getElementsByClassName("popup-back")[0].classList.add("popup-back-animate")
-            document.getElementsByClassName("popup")[0].classList.add("popup-in-animate")
-
-            setTimeout(() => {
-                document.getElementsByClassName("popup-back")[0].classList.remove("popup-back-animate")
-                document.getElementsByClassName("popup")[0].classList.remove("popup-in-animate")
-                document.getElementById("popup-span").innerText = ""
-            }, 3400);
+            showPopup("All items are removed successfully");
         }
-
-
 
     });
 
+
+    
     window.addEventListener('load', () => {
         total = parseInt(localStorage.getItem('phyto_total') || '0');
         iconData = localStorage.getItem("phyto_icon") || "";
         list = JSON.parse(localStorage.getItem('phyto_list') || '[]');
         updateUI();
-
-        // if ('serviceWorker' in navigator) {
-        //     navigator.serviceWorker.register('service-worker.js');
-        // }
     });
 
 
 
 
 
-    // آپلود عکس دلخواه
     document.getElementById("imageInput").addEventListener("change", (e) => {
         const file = e.target.files[0];
         if (!file) return;
@@ -1034,44 +947,13 @@
         reader.onload = function (event) {
             iconData = event.target.result;
             localStorage.setItem("phyto_icon", iconData);
-            updateUI();
+            setTimeout(() => {
+                updateUI();
+            }, 3600);
         }
         reader.readAsDataURL(file);
-
-
-
-        document.getElementById("popup-span").innerText = "Image uploaded successfully"
-        document.getElementsByClassName("popup-back")[0].classList.add("popup-back-animate")
-        document.getElementsByClassName("popup")[0].classList.add("popup-in-animate")
-
-        setTimeout(() => {
-            document.getElementsByClassName("popup-back")[0].classList.remove("popup-back-animate")
-            document.getElementsByClassName("popup")[0].classList.remove("popup-in-animate")
-            document.getElementById("popup-span").innerText = ""
-        }, 3400);
+        showPopup("Image uploaded successfully");
     });
-
-
-
-    document.getElementById("upload").addEventListener("click", function () {
-        document.getElementById("imageInput").click();
-    });
-
-
-
-    function scrollToTop() {
-        const cardlist = document.querySelector(".cardlist");
-        if (cardlist) {
-            cardlist.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
-        }
-    }
-
-
-
-
 </script>
 
 
