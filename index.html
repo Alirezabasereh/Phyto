@@ -204,7 +204,7 @@
             margin-bottom: 10px;
 
 
-            img{
+            img {
                 width: 20px;
                 transform: translateY(3px);
             }
@@ -216,7 +216,7 @@
             .pill_name {
                 color: #2DC379;
             }
-            
+
         }
 
         .inp-btn {
@@ -1137,6 +1137,13 @@
         }, 5100);
     })
 
+
+
+
+
+
+
+
     document.getElementById("upload").addEventListener("click", function () {
         document.getElementById("imageInput").click();
     });
@@ -1154,7 +1161,44 @@
 
 
 
+
+    // if (!max || !pillname) {
+    //     while (true) {
+    //         let input = prompt("Enter number of the pills:");
+    //         max = parseInt(input);
+    //         if (!isNaN(max) && max > 0) {
+    //             localStorage.setItem("phyto_max", max);
+    //             break;
+    //         }
+
+    //         // else {
+    //         //     alert("Please enter a valid number");
+    //         // }
+
+    //     }
+
+    //     while (true) {
+    //         pillname = prompt("Enter the pill name:");
+    //         if (pillname && pillname.trim() !== "") {
+    //             localStorage.setItem("phyto_pillname", pillname);
+    //             break;
+    //         }
+
+    //         // else {
+    //         //     alert("Please enter a valid name");
+    //         // }
+    //     }
+
+    // }
+
+
+    // document.getElementById("h2").innerHTML = `Log Your Daily <span class="pill_name"> ${pillname} </span> Intake`;
+
+
+
     function _enter() {
+         document.getElementById("pillnameInput").value = ""
+            document.getElementById("pillcountInput").value = ""
         if (!max || !pillname) {
             const initBack = document.querySelector(".init-back");
             initBack.classList.add("active");
@@ -1175,8 +1219,7 @@
                 document.getElementById("h2").innerHTML = `Log Your Daily <span class="pill_name">${pillname}</span> Intake`;
 
                 updateUI();
-                document.getElementById("pillnameInput").value = null
-                document.getElementById("pillcountInput").value = null
+
             } else {
                 showPopup("Please fill out both fields correctly");
 
@@ -1239,7 +1282,7 @@
         const input = document.getElementById('countInput').value;
 
         if (input > (max - total)) {
-            showPopup("You've already taken all the pills");
+            showPopup("Amount is higher than remaining");
         }
         else {
             const count = parseInt(input);
@@ -1345,6 +1388,7 @@
         showPopup("Image uploaded successfully");
     });
 </script>
+
 
 
 
