@@ -1117,6 +1117,7 @@
             max = 0
             total = 0
             pillname = ""
+            progressBar.style.width = (0) + "%";
 
             let restored = 0;
             list.forEach(item => {
@@ -1136,13 +1137,6 @@
         }, 5100);
     })
 
-
-
-
-
-
-
-
     document.getElementById("upload").addEventListener("click", function () {
         document.getElementById("imageInput").click();
     });
@@ -1159,69 +1153,6 @@
     }
 
 
-
-
-    // if (!max || !pillname) {
-    //     while (true) {
-    //         let input = prompt("Enter number of the pills:");
-    //         max = parseInt(input);
-    //         if (!isNaN(max) && max > 0) {
-    //             localStorage.setItem("phyto_max", max);
-    //             break;
-    //         }
-
-    //         // else {
-    //         //     alert("Please enter a valid number");
-    //         // }
-
-    //     }
-
-    //     while (true) {
-    //         pillname = prompt("Enter the pill name:");
-    //         if (pillname && pillname.trim() !== "") {
-    //             localStorage.setItem("phyto_pillname", pillname);
-    //             break;
-    //         }
-
-    //         // else {
-    //         //     alert("Please enter a valid name");
-    //         // }
-    //     }
-
-    // }
-
-
-    // document.getElementById("h2").innerHTML = `Log Your Daily <span class="pill_name"> ${pillname} </span> Intake`;
-
-
-
-    // اگر مقدار نداشت، پاپ‌آپ رو نشون بده
-
-    // if (!max || !pillname) {
-    //     const initBack = document.querySelector(".init-back");
-    //     initBack.classList.add("active");
-    // }
-
-    // document.getElementById("initSave").addEventListener("click", function () {
-    //     const pillnameVal = document.getElementById("pillnameInput").value.trim();
-    //     const pillcountVal = parseInt(document.getElementById("pillcountInput").value);
-
-    //     if (pillnameVal && !isNaN(pillcountVal) && pillcountVal > 0) {
-    //         localStorage.setItem("phyto_pillname", pillnameVal);
-    //         localStorage.setItem("phyto_max", pillcountVal);
-
-    //         pillname = pillnameVal;
-    //         max = pillcountVal;
-
-    //         document.querySelector(".init-back").classList.remove("active");
-    //         document.getElementById("h2").innerHTML = `Log Your Daily <span class="pill_name">${pillname}</span> Intake`;
-
-    //         updateUI();
-    //     } else {
-    //         showPopup("Please fill out both fields correctly");
-
-    //     }
-    // });
 
     function _enter() {
         if (!max || !pillname) {
