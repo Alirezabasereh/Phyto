@@ -202,6 +202,12 @@
             font-weight: 700;
             color: #222;
             margin-bottom: 10px;
+
+
+            img{
+                width: 20px;
+                transform: translateY(3px);
+            }
         }
 
         h2 {
@@ -210,6 +216,7 @@
             .pill_name {
                 color: #2DC379;
             }
+            
         }
 
         .inp-btn {
@@ -516,12 +523,12 @@
 
             10% {
                 opacity: 1;
-                z-index: 999;
+                z-index: 1999;
             }
 
             70% {
                 opacity: 1;
-                z-index: 999;
+                z-index: 1999;
             }
 
             100% {
@@ -771,6 +778,94 @@
         #totalText {
             white-space: pre-line;
         }
+
+
+
+
+
+
+
+
+
+        .init-back {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            backdrop-filter: blur(5px);
+            background-color: rgba(255, 255, 255, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: -100;
+            opacity: 0;
+            transition: all 0.4s ease;
+        }
+
+        .init-popup {
+            background-color: white;
+            padding: 20px;
+            width: 90%;
+            max-width: 350px;
+            border-radius: 16px;
+            border: 2px solid #2DC379;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transform: translateY(-100px);
+            transition: 0.4s ease;
+            opacity: 0;
+        }
+
+
+        .init-popup input {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            transition: 0.2s;
+
+
+            &:focus {
+                border: 1px solid #2DC379;
+                /* سبز مثلا */
+                outline: none;
+                box-shadow: 0 0 5px rgba(45, 195, 121, 0.4);
+                /* یه هاله ملایم */
+            }
+
+        }
+
+
+
+
+        .init-popup button {
+            padding: 10px;
+            font-size: 16px;
+            background-color: #2DC379;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.4s;
+        }
+
+        .init-popup button:active {
+            scale: 0.95;
+        }
+
+        .init-back.active {
+            z-index: 999;
+            opacity: 1;
+            /* transform: translateY(0); */
+        }
+
+        .init-back.active .init-popup {
+            transform: translateY(0);
+            opacity: 1;
+        }
     </style>
 
 </head>
@@ -783,7 +878,10 @@
         <div class="first-section">
 
 
-            <h1 id="h1">DoseLog</h1>
+            <h1 id="h1">DoseLog
+                <img src="pill-icon.png" alt="">
+
+            </h1>
             <h2 id="h2"></h2>
 
             <div class="inp-btn">
@@ -813,7 +911,7 @@
             </div>
 
             <div id="progress-txt">
-                <span>0%</span>
+                <span id="prgrs-prcnt">0%</span>
                 <span>Consumed</span>
             </div>
 
@@ -847,6 +945,21 @@
                     <!-- <i class="bi bi-check-circle-fill"></i> -->
                 </div>
             </div>
+
+
+            <div class="init-back">
+                <div class="init-popup">
+                    <h6>Welcome!</h6>
+                    <span>To get started, enter pill name and total amount:</span>
+
+                    <input type="text" id="pillnameInput" placeholder="Pill name" />
+                    <input type="number" id="pillcountInput" placeholder="Total pills" />
+
+                    <button id="initSave">Save</button>
+                </div>
+            </div>
+
+
 
 
 
@@ -921,6 +1034,7 @@
     let progressBar = document.querySelector("#persentage>div")
 
 
+
     function showPopup(message) {
         document.getElementById("popup-span").innerText = message;
         document.getElementsByClassName("popup-back")[0].classList.add("popup-back-animate");
@@ -949,12 +1063,6 @@
 
             confirmBox.style.Bottom = "5%"
         }, 1000);
-
-
-
-
-
-
 
     }
 
@@ -1005,14 +1113,33 @@
         }, 1000);
 
         setTimeout(() => {
-            location.reload();
+            // location.reload();
+            max = 0
+            total = 0
+            pillname = ""
+
+            let restored = 0;
+            list.forEach(item => {
+                restored += item.count;
+            });
+            total -= restored;
+            if (total < 0) total = 0;
+            list = [];
+            saveData();
+            document.getElementById("h2").innerHTML = `Log Your Daily <span class="pill_name"></span> Intake`;
+            updateUI()
+            document.getElementById("prgrs-prcnt").innerHTML = "0%"
         }, 5000);
+
+        setTimeout(() => {
+            _enter()
+        }, 5100);
     })
 
 
 
 
-    
+
 
 
 
@@ -1034,30 +1161,103 @@
 
 
 
-    if (!max || !pillname) {
-        while (true) {
-            let input = prompt("Enter number of the pills:");
-            max = parseInt(input);
-            if (!isNaN(max) && max > 0) {
-                localStorage.setItem("phyto_max", max);
-                break;
-            } else {
-                alert("Please enter a valid number");
-            }
+    // if (!max || !pillname) {
+    //     while (true) {
+    //         let input = prompt("Enter number of the pills:");
+    //         max = parseInt(input);
+    //         if (!isNaN(max) && max > 0) {
+    //             localStorage.setItem("phyto_max", max);
+    //             break;
+    //         }
+
+    //         // else {
+    //         //     alert("Please enter a valid number");
+    //         // }
+
+    //     }
+
+    //     while (true) {
+    //         pillname = prompt("Enter the pill name:");
+    //         if (pillname && pillname.trim() !== "") {
+    //             localStorage.setItem("phyto_pillname", pillname);
+    //             break;
+    //         }
+
+    //         // else {
+    //         //     alert("Please enter a valid name");
+    //         // }
+    //     }
+
+    // }
+
+
+    // document.getElementById("h2").innerHTML = `Log Your Daily <span class="pill_name"> ${pillname} </span> Intake`;
+
+
+
+    // اگر مقدار نداشت، پاپ‌آپ رو نشون بده
+
+    // if (!max || !pillname) {
+    //     const initBack = document.querySelector(".init-back");
+    //     initBack.classList.add("active");
+    // }
+
+    // document.getElementById("initSave").addEventListener("click", function () {
+    //     const pillnameVal = document.getElementById("pillnameInput").value.trim();
+    //     const pillcountVal = parseInt(document.getElementById("pillcountInput").value);
+
+    //     if (pillnameVal && !isNaN(pillcountVal) && pillcountVal > 0) {
+    //         localStorage.setItem("phyto_pillname", pillnameVal);
+    //         localStorage.setItem("phyto_max", pillcountVal);
+
+    //         pillname = pillnameVal;
+    //         max = pillcountVal;
+
+    //         document.querySelector(".init-back").classList.remove("active");
+    //         document.getElementById("h2").innerHTML = `Log Your Daily <span class="pill_name">${pillname}</span> Intake`;
+
+    //         updateUI();
+    //     } else {
+    //         showPopup("Please fill out both fields correctly");
+
+    //     }
+    // });
+
+    function _enter() {
+        if (!max || !pillname) {
+            const initBack = document.querySelector(".init-back");
+            initBack.classList.add("active");
         }
 
-        while (true) {
-            pillname = prompt("Enter the pill name:");
-            if (pillname && pillname.trim() !== "") {
-                localStorage.setItem("phyto_pillname", pillname);
-                break;
+        document.getElementById("initSave").addEventListener("click", function () {
+            const pillnameVal = document.getElementById("pillnameInput").value.trim();
+            const pillcountVal = parseInt(document.getElementById("pillcountInput").value);
+
+            if (pillnameVal && !isNaN(pillcountVal) && pillcountVal > 0) {
+                localStorage.setItem("phyto_pillname", pillnameVal);
+                localStorage.setItem("phyto_max", pillcountVal);
+
+                pillname = pillnameVal;
+                max = pillcountVal;
+
+                document.querySelector(".init-back").classList.remove("active");
+                document.getElementById("h2").innerHTML = `Log Your Daily <span class="pill_name">${pillname}</span> Intake`;
+
+                updateUI();
+                document.getElementById("pillnameInput").value = null
+                document.getElementById("pillcountInput").value = null
             } else {
-                alert("Please enter a valid name");
+                showPopup("Please fill out both fields correctly");
+
             }
-        }
+        });
+
     }
 
-    document.getElementById("h2").innerHTML = `Log Your Daily <span class="pill_name"> ${pillname} </span> Intake`;
+
+
+
+
 
 
 
@@ -1182,7 +1382,17 @@
         total = parseInt(localStorage.getItem('phyto_total') || '0');
         iconData = localStorage.getItem("phyto_icon") || "";
         list = JSON.parse(localStorage.getItem('phyto_list') || '[]');
-        updateUI();
+
+        pillname = localStorage.getItem("phyto_pillname") || "";
+        max = parseInt(localStorage.getItem("phyto_max") || "0");
+
+        if (!pillname || !max || max === 0) {
+            document.getElementById("h2").innerHTML = `Log Your Daily <span class="pill_name"></span> Intake`;
+            _enter();
+        } else {
+            document.getElementById("h2").innerHTML = `Log Your Daily <span class="pill_name">${pillname}</span> Intake`;
+            updateUI();
+        }
     });
 
 
