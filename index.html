@@ -54,6 +54,7 @@
             box-sizing: border-box;
             font-family: "Nunito";
             -webkit-tap-highlight-color: transparent;
+            transition: background-color 0.4s, color 0.4s, border-color 0.4s, background-image 0.4s, border 0.4s;
         }
 
 
@@ -75,7 +76,6 @@
             max-width: 400px;
             background-color: #FEFEFE;
             height: 100vh;
-            padding: 0px 10px;
             position: relative;
             overflow: hidden;
             display: flex;
@@ -89,6 +89,8 @@
                 min-height: auto;
                 flex-shrink: 0;
                 margin-bottom: 16px;
+                position: relative;
+                padding: 0px 10px;
             }
 
             .cardlist {
@@ -96,6 +98,7 @@
                 overflow-y: scroll;
                 scroll-behavior: smooth;
                 flex-grow: 1;
+                padding: 0px 10px;
             }
 
 
@@ -104,7 +107,6 @@
                 flex-shrink: 0;
                 z-index: 100;
                 bottom: 0;
-                /* transform: translateY(10px); */
                 left: 0;
                 width: 100%;
                 height: 8%;
@@ -115,6 +117,7 @@
                 display: flex;
                 justify-content: start;
                 align-items: center;
+
 
                 button {
                     width: 20%;
@@ -134,6 +137,7 @@
                     justify-content: center;
                     align-items: center;
                     flex-direction: column;
+                    font-weight: bold;
 
                     &:active {
                         background-color: #0000002c;
@@ -175,7 +179,7 @@
                         justify-content: center;
                         align-items: center;
                         box-shadow: 0px 0px 15px #2dc37846;
-                        transition: 0.2s;
+                        transition: width 0.2s, height 0.2s, background-color 0.4s, box-shadow 0.4s;
 
                         &:active {
                             width: 68px;
@@ -330,11 +334,10 @@
 
 
             .txt-before {
-
                 display: flex;
                 width: 100%;
                 margin-top: 5px;
-                font-weight: 500;
+                font-weight: bold;
             }
 
 
@@ -413,6 +416,8 @@
             text-transform: capitalize;
             color: #000000;
             position: relative;
+            font-weight: bold;
+
 
             &::after {
                 position: absolute;
@@ -784,15 +789,27 @@
 
         #remainingText {
             white-space: pre-line;
+            font-size: 30px;
         }
 
 
 
         #totalText {
             white-space: pre-line;
+            font-size: 30px;
         }
 
+        @media screen and (max-width:360px) {
 
+            #remainingText {
+                font-size: 25px;
+            }
+
+            #totalText {
+                font-size: 25px;
+            }
+
+        }
 
 
 
@@ -879,6 +896,171 @@
             transform: translateY(0);
             opacity: 1;
         }
+
+
+
+        .bi-moon {
+            font-size: 25px;
+            color: #2DC379;
+            transition: 0.4s;
+            opacity: 1;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .bi-moon-fill {
+            font-size: 25px;
+            opacity: 0;
+            color: #2DC379;
+            transition: 0.4s;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #toggleDarkMode {
+            background-color: transparent;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            position: absolute;
+            top: 5%;
+            right: 2%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+
+
+
+
+        /* dark mode */
+        body.dark-mode {
+            background-color: #0D1117;
+            color: #E6EDF3;
+        }
+
+        body.dark-mode .main {
+            background-color: #161B22;
+        }
+
+        body.dark-mode .bottom,
+        body.dark-mode .init-popup,
+        body.dark-mode .popup,
+        body.dark-mode .confirm {
+            background-color: #1A1F2B;
+            border-color: #2DC379;
+            color: #E6EDF3;
+        }
+
+        body.dark-mode .bottom {
+            border-color: #262c3a;
+        }
+
+
+
+        body.dark-mode .count div {
+            background-color: #1A1F2B;
+            color: #e6edf3;
+        }
+
+        body.dark-mode #home div {
+            background-color: #1A1F2B !important;
+        }
+
+        body.dark-mode #progress-txt {
+            color: #E6EDF3;
+        }
+
+        body.dark-mode #persentage {
+            background-color: #4f4f4f81;
+        }
+
+        body.dark-mode .past-usage {
+            color: #E6EDF3;
+        }
+
+        body.dark-mode #listView li {
+            background-color: #1A1F2B;
+            border: 1px solid #2DC379;
+            border-color: #262c3a;
+        }
+
+        body.dark-mode .data {
+            color: #e6edf3;
+        }
+
+        body.dark-mode .pcs-count {
+            color: #e6edf3;
+        }
+
+
+        body.dark-mode .bottom button {
+            color: #e6edf3;
+        }
+
+        body.dark-mode .bottom #home div {
+            box-shadow: none;
+        }
+
+        body.dark-mode h1 {
+            color: #e6edf3;
+        }
+
+        body.dark-mode h2 {
+            color: #e6edf3;
+        }
+
+
+        body.dark-mode .inp-btn {
+            background-image: linear-gradient(to right, #1A1F2B, #1A1F2B);
+
+            background-image: #1A1F2B;
+            border-color: #262c3a;
+        }
+
+        body.dark-mode input {
+            background-color: #1A1F2B;
+            border-color: #262c3a;
+            color: #e6edf3;
+        }
+
+        body.dark-mode #countInput {
+            color: #e6edf3;
+        }
+
+        body.dark-mode #countInput::placeholder {
+            color: #686868;
+        }
+
+        body.dark-mode .confirm-back,
+        body.dark-mode .popup-back,
+        body.dark-mode .init-back {
+            background-color: rgba(0, 0, 0, 0.647);
+        }
+
+        body.dark-mode .confirm,
+        body.dark-mode #confirm-span,
+        body.dark-mode .popup,
+        body.dark-mode .init-popup {
+            background-color: #161B22;
+            color: #e6edf3;
+            border-color: #262c3a;
+        }
+
+        body.dark-mode .bi-moon {
+            opacity: 0;
+        }
+
+        body.dark-mode .bi-moon-fill {
+            opacity: 1;
+        }
     </style>
 
 </head>
@@ -896,6 +1078,13 @@
 
             </h1>
             <h2 id="h2"></h2>
+
+            <button id="toggleDarkMode">
+
+                <i class="bi bi-moon"></i>
+                <i class="bi bi-moon-fill"></i>
+            </button>
+
 
             <div class="inp-btn">
 
@@ -946,7 +1135,7 @@
             </div>
 
 
-            <div class="confirm-back">
+            <div class="confirm-back back1">
                 <div class="confirm">
                     <h6>Reset Data</h6>
                     <span id="confirm-span">Are you sure you want to reset all data?<br>This action can't be
@@ -954,6 +1143,20 @@
                     <div>
                         <button id="cancel">Cancel</button>
                         <button id="reset-button">Reset Data</button>
+                    </div>
+                    <!-- <i class="bi bi-check-circle-fill"></i> -->
+                </div>
+            </div>
+
+
+            <div class="confirm-back wipeback">
+                <div id="wipe" class="confirm">
+                    <h6>Wipe List</h6>
+                    <span id="confirm-span">Are you sure you want to wipe all items of the list?<br>This action can't be
+                        undone.</span>
+                    <div>
+                        <button id="cancel1">Cancel</button>
+                        <button id="reset-button1">Wipe List</button>
                     </div>
                     <!-- <i class="bi bi-check-circle-fill"></i> -->
                 </div>
@@ -1046,7 +1249,7 @@
     let lastAdded = null;
     let progressBar = document.querySelector("#persentage>div")
 
- 
+
 
 
 
@@ -1068,6 +1271,10 @@
     const confirmBack = document.querySelector(".confirm-back");
     const confirmBox = document.querySelector(".confirm");
 
+    const wipeBack = document.querySelector(".wipeback");
+    const wipeBox = document.querySelector("#wipe");
+
+
     function resetAll() {
         confirmBack.classList.add("confirm-back-animate");
         confirmBox.classList.add("confirm-in-animate");
@@ -1082,6 +1289,22 @@
 
     }
 
+
+
+    function wipe() {
+        wipeBack.classList.add("confirm-back-animate");
+        wipeBox.classList.add("confirm-in-animate");
+
+
+        setTimeout(() => {
+            wipeBack.style.zIndex = 999
+            wipeBack.style.opacity = 1
+
+            wipeBox.style.Bottom = "5%"
+        }, 1000);
+
+    }
+
     document.getElementById("cancel").addEventListener("click", function () {
 
         confirmBack.classList.remove("confirm-back-animate");
@@ -1089,6 +1312,7 @@
 
         confirmBack.classList.add("confirm-back-out-animate");
         confirmBox.classList.add("confirm-out-animate");
+
 
         setTimeout(() => {
             confirmBack.classList.remove("confirm-back-out-animate");
@@ -1098,11 +1322,92 @@
             confirmBack.style.opacity = 0
 
             confirmBox.style.Bottom = "-100%"
+
+
+
         }, 1000);
 
 
 
     });
+
+
+
+
+    document.getElementsByClassName("back1")[0].addEventListener("click", function () {
+
+        confirmBack.classList.remove("confirm-back-animate");
+        confirmBox.classList.remove("confirm-in-animate");
+
+        confirmBack.classList.add("confirm-back-out-animate");
+        confirmBox.classList.add("confirm-out-animate");
+
+
+        setTimeout(() => {
+            confirmBack.classList.remove("confirm-back-out-animate");
+            confirmBox.classList.remove("confirm-out-animate");
+
+            confirmBack.style.zIndex = -100
+            confirmBack.style.opacity = 0
+
+            confirmBox.style.Bottom = "-100%"
+
+        }, 1000);
+
+    });
+
+
+
+
+
+
+    document.getElementById("cancel1").addEventListener("click", function () {
+        wipeBack.classList.remove("confirm-back-animate");
+        wipeBox.classList.remove("confirm-in-animate");
+
+        wipeBack.classList.add("confirm-back-out-animate");
+        wipeBox.classList.add("confirm-out-animate");
+
+        setTimeout(() => {
+            wipeBack.classList.remove("confirm-back-out-animate");
+            wipeBox.classList.remove("confirm-out-animate");
+
+            wipeBack.style.zIndex = -100
+            wipeBack.style.opacity = 0
+
+            wipeBox.style.Bottom = "-100%"
+        }, 1000);
+    });
+
+
+
+    document.getElementsByClassName("wipeback")[0].addEventListener("click", function () {
+
+        wipeBack.classList.remove("confirm-back-animate");
+        wipeBox.classList.remove("confirm-in-animate");
+
+        wipeBack.classList.add("confirm-back-out-animate");
+        wipeBox.classList.add("confirm-out-animate");
+
+        setTimeout(() => {
+            wipeBack.classList.remove("confirm-back-out-animate");
+            wipeBox.classList.remove("confirm-out-animate");
+
+            wipeBack.style.zIndex = -100
+            wipeBack.style.opacity = 0
+
+            wipeBox.style.Bottom = "-100%"
+        }, 1000);
+
+    });
+
+
+
+
+
+
+
+
 
 
 
@@ -1124,12 +1429,16 @@
         }, 1000);
 
         setTimeout(() => {
+            const keepDarkMode = localStorage.getItem("dark-mode");
             localStorage.clear();
+            if (keepDarkMode === "true") {
+                localStorage.setItem("dark-mode", "true");
+            }
             showPopup("All data was reset successfully");
         }, 1000);
 
+
         setTimeout(() => {
-            // location.reload();
             max = 0
             total = 0
             pillname = ""
@@ -1146,11 +1455,64 @@
             document.getElementById("h2").innerHTML = `Log Your Daily <span class="pill_name"></span> Intake`;
             updateUI()
             document.getElementById("prgrs-prcnt").innerHTML = "0%"
-        }, 5000);
+            iconData = localStorage.setItem("phyto_icon", "pill-icon.png");
+            document.getElementById("imageInput").value = "";
+
+            if (localStorage.getItem("dark-mode") === "true") {
+                document.body.classList.add("dark-mode");
+            }
+        }, 1000);
 
         setTimeout(() => {
             _enter()
         }, 5100);
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    document.getElementById("reset-button1").addEventListener("click", function () {
+        wipeBack.classList.remove("confirm-back-animate");
+        wipeBox.classList.remove("confirm-in-animate");
+
+        wipeBack.classList.add("confirm-back-out-animate");
+        wipeBox.classList.add("confirm-out-animate");
+
+        setTimeout(() => {
+            wipeBack.classList.remove("confirm-back-out-animate");
+            wipeBox.classList.remove("confirm-out-animate");
+
+            wipeBack.style.zIndex = -100
+            wipeBack.style.opacity = 0
+
+            wipeBox.style.Bottom = "-100%"
+        }, 1000);
+
+        setTimeout(() => {
+            let restored = 0;
+            list.forEach(item => {
+                restored += item.count;
+            });
+            total -= restored;
+            if (total < 0) total = 0;
+            list = [];
+            saveData();
+            updateUI();
+            showPopup("All items are removed successfully");
+        }, 1000);
+
+
+
     })
 
 
@@ -1175,40 +1537,6 @@
         }
     }
 
-
-
-
-    // if (!max || !pillname) {
-    //     while (true) {
-    //         let input = prompt("Enter number of the pills:");
-    //         max = parseInt(input);
-    //         if (!isNaN(max) && max > 0) {
-    //             localStorage.setItem("phyto_max", max);
-    //             break;
-    //         }
-
-    //         // else {
-    //         //     alert("Please enter a valid number");
-    //         // }
-
-    //     }
-
-    //     while (true) {
-    //         pillname = prompt("Enter the pill name:");
-    //         if (pillname && pillname.trim() !== "") {
-    //             localStorage.setItem("phyto_pillname", pillname);
-    //             break;
-    //         }
-
-    //         // else {
-    //         //     alert("Please enter a valid name");
-    //         // }
-    //     }
-
-    // }
-
-
-    // document.getElementById("h2").innerHTML = `Log Your Daily <span class="pill_name"> ${pillname} </span> Intake`;
 
 
 
@@ -1242,8 +1570,17 @@
             }
         });
 
+
+
+
     }
 
+
+    document.getElementById("pillcountInput").addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+            document.getElementById("initSave").click();
+        }
+    });
 
 
 
@@ -1281,6 +1618,7 @@
                              `;
             listView.appendChild(li);
         });
+
 
         progressBar.style.width = ((total / max) * 100) + "%";
         document.querySelector("#progress-txt>span:nth-of-type(1)").innerHTML = Math.round((total / max) * 100) + "%";
@@ -1320,6 +1658,13 @@
 
     });
 
+    document.getElementById("countInput").addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+            document.getElementById("saveButton").click();
+        }
+    });
+
+
 
 
 
@@ -1350,25 +1695,31 @@
         if (total == 0) {
             showPopup("There is no item to remove");
         } else {
-
-
-            let restored = 0;
-            list.forEach(item => {
-                restored += item.count;
-            });
-            total -= restored;
-            if (total < 0) total = 0;
-            list = [];
-            saveData();
-            updateUI();
-            showPopup("All items are removed successfully");
+            wipe()
         }
 
     });
 
 
 
+
+
+
+    document.getElementById("toggleDarkMode").addEventListener("click", function () {
+        document.body.classList.toggle("dark-mode");
+        localStorage.setItem("dark-mode", document.body.classList.contains("dark-mode"));
+    });
+
+
+
+
     window.addEventListener('load', () => {
+
+        if (localStorage.getItem("dark-mode") === "true") {
+            document.body.classList.add("dark-mode");
+        }
+
+
         total = parseInt(localStorage.getItem('phyto_total') || '0');
         iconData = localStorage.getItem("phyto_icon") || "";
         list = JSON.parse(localStorage.getItem('phyto_list') || '[]');
@@ -1404,12 +1755,4 @@
         showPopup("Image uploaded successfully");
     });
 </script>
-
-
-
-
-
-
-
-
 </html>
